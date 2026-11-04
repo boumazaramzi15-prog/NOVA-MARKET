@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Discover products from trusted brands across technology, lifestyle, home, gaming and more with NOVA MARKET.">
+  <meta name="theme-color" content="#101827">
+  <title>NOVA MARKET — Discover More</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="announcement">A world of products. One place to discover.</div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="NOVA MARKET home"><span class="brand-mark">N</span><span>NOVA<span class="brand-light">MARKET</span></span></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+    <nav id="mainNav" aria-label="Main navigation">
+      <a href="#categories">Categories</a><a href="#how">How it works</a><a href="#about">About</a><a href="#contact">Contact</a>
+    </nav>
+    <a class="header-cta" href="#categories">Explore marketplace <span>↗</span></a>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="eyebrow-dot"></span> YOUR GLOBAL DISCOVERY MARKETPLACE</span>
+        <h1>Find what moves<br>you <span>forward.</span></h1>
+        <p>Explore ideas, products and brands across the things you love. Your next great find starts here.</p>
+        <div class="hero-actions"><a class="button button-primary" href="#categories">Explore categories <span>→</span></a><a class="text-link" href="#how">How NOVA works <span>↗</span></a></div>
+        <div class="hero-note"><span class="note-icon">✦</span> Curated discovery. Clear recommendations. Shopping with confidence.</div>
+      </div>
+      <div class="hero-art" aria-label="Abstract NOVA marketplace illustration">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="planet"><span>NOVA</span><small>DISCOVER MORE</small></div>
+        <div class="float-card card-tech"><span>⌘</span><b>Tech</b><small>Ideas that connect</small></div>
+        <div class="float-card card-home"><span>⌂</span><b>Home</b><small>Made for living</small></div>
+        <div class="float-card card-play"><span>✧</span><b>Play</b><small>Level up your fun</small></div>
+        <div class="spark spark-a">✳</div><div class="spark spark-b">✦</div>
+      </div>
+    </section>
+
+    <section class="trust-strip"><div><strong>12</strong><span>discovery categories</span></div><i></i><div><strong>Global</strong><span>brand discovery</span></div><i></i><div><strong>Clear</strong><span>affiliate disclosure</span></div></section>
+
+    <section class="section categories-section" id="categories">
+      <div class="section-heading"><div><span class="eyebrow">EXPLORE THE UNIVERSE</span><h2>Something for <span>every you.</span></h2></div><p>Browse the collections and discover useful finds, fresh ideas and brands worth knowing.</p></div>
+      <div class="search-wrap"><span>⌕</span><input id="categorySearch" type="search" placeholder="Search categories..." aria-label="Search categories"><span class="search-hint">12 COLLECTIONS</span></div>
+      <div class="category-grid" id="categoryGrid">
+        <a class="category-card" href="#contact" data-name="technology electronics"><span class="category-icon">⌘</span><b>Technology</b><small>Devices & smart gear</small><span class="card-arrow">↗</span></a>
+        <a class="category-card" href="#contact" data-name="fashion style accessories"><span class="category-icon">◈</span><b>Fashion & Style</b><small>Wear your point of view</small><span class="card-arrow">↗</span></a>
+        <a class="category-card" href="#contact" data-name="home living furniture"><span class="category-icon">⌂</span><b>Home & Living</b><small>Make space yours</small><span class="card-arrow">↗</span></a>
+        <a class="category-card" href="#contact" data-name="gaming entertainment"><span class="category-icon">▣</span><b>Gaming</b><small>Gear up and play</small><span class="card-arrow">↗</span></a>
+        <a class="category-card" href="#contact" data-name="health wellness fitness"><span class="category-icon">✚</span><b>Health & Wellness</b><small>Everyday wellbeing</small><span class="card-arrow">↗</span></a>
+        <a class="category-card" href="#contact" data-name="beauty personal care"><span class="category-icon">✧</span><b>Beauty & Care</b><small>Your daily essentials</small><span class="card-arrow">↗</span></a>
+        <a class="category-card" href="#contact" data-name="sports outdoors travel"><span class="category-icon">➶</span><b>Sports & Outdoors</b><small>Go a little further</small><span class="card-arrow">↗</span></a>
+        <a class="category-card" href="#contact" data-name="automotive car accessories"><span class="category-icon">◉</span><b>Automotive</b><small>For the road ahead</small><span class="card-arrow">↗</span></a>
+        <a class="category-card" href="#contact" data-name="education books learning"><span class="category-icon">▤</span><b>Books & Learning</b><small>Ideas worth exploring</small><span class="card-arrow">↗</span></a>
+        <a class="category-card" href="#contact" data-name="pets animals"><span class="category-icon">♡</span><b>Pets</b><small>For your best friends</small><span class="card-arrow">↗</span></a>
+        <a class="category-card" href="#contact" data-name="food kitchen appliances"><span class="category-icon">♨</span><b>Food & Kitchen</b><small>Made for good taste</small><span class="card-arrow">↗</span></a>
+        <a class="category-card" href="#contact" data-name="adult wellness intimacy"><span class="category-icon">◇</span><b>Adult Wellness</b><small>18+ products and wellbeing</small><span class="card-arrow">↗</span></a>
+      </div>
+      <p class="empty-state" id="emptyState" hidden>No categories match your search. Try another word.</p>
+      <p class="category-note">Product collections are being reviewed. Listings and outbound shopping links will appear only after partner terms and product details are verified.</p>
+    </section>
+
+    <section class="how-section" id="how"><div class="section section-inner"><div class="section-heading"><div><span class="eyebrow">SIMPLE BY DESIGN</span><h2>Discover. Compare. <span>Choose.</span></h2></div><p>NOVA helps you find products from independent retailers and brands. The purchase happens on the seller's website.</p></div>
+      <div class="steps"><article><span>01</span><h3>Explore</h3><p>Browse collections and discover products that fit your interests.</p></article><article><span>02</span><h3>Review</h3><p>Check the seller's product details, price, delivery and return terms.</p></article><article><span>03</span><h3>Shop direct</h3><p>When you choose a product, you continue to the retailer to complete your order.</p></article></div>
+    </div></section>
+
+    <section class="about-section section" id="about"><span class="eyebrow">THE NOVA IDEA</span><h2>A better way to<br><span>find your next thing.</span></h2><p>NOVA MARKET is an independent product-discovery marketplace. We aim to make browsing simpler by bringing useful finds and trusted partner brands together in one clear experience.</p></section>
+
+    <section class="contact-section section" id="contact"><div><span class="eyebrow">LET'S CONNECT</span><h2>Have a brand or<br>product in mind?</h2><p>Partner and product enquiries are welcome. Our contact channel will be published here once configured.</p></div><div class="contact-panel"><span class="contact-symbol">✉</span><b>Partnership enquiries</b><small>Contact details coming soon</small><span class="panel-line"></span><small>We do not accept payments or process orders on this website.</small></div></section>
+  </main>
+
+  <footer class="site-footer"><a class="brand" href="#home"><span class="brand-mark">N</span><span>NOVA<span class="brand-light">MARKET</span></span></a><div class="footer-links"><a href="affiliate-disclosure.html">Affiliate disclosure</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div><small>© <span id="year"></span> NOVA MARKET. All rights reserved.</small></footer>
+  <script src="app.js"></script>
+</body>
+</html>
