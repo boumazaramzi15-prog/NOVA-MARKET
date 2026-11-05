@@ -54,6 +54,8 @@ if (categoryTitle) {
 const catalogProducts = [];
 const catalogGrid = document.getElementById("catalogGrid");
 if (catalogGrid) {
+  const standardCollectionPanel = document.getElementById("standardCollection");
+  if (standardCollectionPanel) standardCollectionPanel.hidden = true;
   const catalogSearch = document.getElementById("catalogSearch");
   const catalogSort = document.getElementById("catalogSort");
   const catalogCount = document.getElementById("catalogCount");
