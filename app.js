@@ -36,6 +36,12 @@ if (categoryTitle) {
     document.title = item[0] + " — NOVA MARKET";
     categoryTitle.textContent = item[0];
     document.getElementById("categoryDescription").textContent = item[1];
+    if (key === "adult") {
+      const adultCollection = document.getElementById("adultCollection");
+      const standardCollection = document.getElementById("standardCollection");
+      if (adultCollection) adultCollection.hidden = false;
+      if (standardCollection) standardCollection.hidden = true;
+    }
   } else {
     categoryTitle.textContent = "Collection not found";
     document.getElementById("categoryDescription").textContent = "Please return to all categories and choose a collection.";
