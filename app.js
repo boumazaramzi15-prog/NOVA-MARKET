@@ -47,3 +47,57 @@ if (categoryTitle) {
     document.getElementById("categoryDescription").textContent = "Please return to all categories and choose a collection.";
   }
 }
+
+// NOVA MARKET catalogue foundation.
+// Keep this array empty until each listing has a verified seller page, price,
+// availability and clearly stated shipping coverage. Never invent affiliate URLs.
+const catalogProducts = [];
+const catalogGrid = document.getElementById("catalogGrid");
+if (catalogGrid) {
+  const catalogSearch = document.getElementById("catalogSearch");
+  const catalogSort = document.getElementById("catalogSort");
+  const catalogCount = document.getElementById("catalogCount");
+  const catalogEmpty = document.getElementById("catalogEmpty");
+  const currentCategory = new URLSearchParams(window.location.search).get("name") || "";
+  const renderCatalog = () => {
+    const term = (catalogSearch?.value || "").trim().toLowerCase();
+    let items = catalogProducts.filter(product =>
+      (!currentCategory || product.category === currentCategory) &&
+      (product.title + " " + product.description + " " + product.brand).toLowerCase().includes(term)
+    );
+    if (catalogSort?.value === "price-low") items.sort((a,b) => a.price - b.price);
+    if (catalogSort?.value === "price-high") items.sort((a,b) => b.price - a.price);
+    catalogGrid.replaceChildren();
+    items.forEach(product => {
+      const card = document.createElement("article");
+      card.className = "catalog-card";
+      const image = document.createElement("img");
+      image.src = product.image;
+      image.alt = product.title;
+      image.loading = "lazy";
+      const body = document.createElement("div");
+      body.className = "catalog-card-body";
+      const brand = document.createElement("small");
+      brand.textContent = product.brand;
+      const title = document.createElement("h3");
+      title.textContent = product.title;
+      const description = document.createElement("p");
+      description.textContent = product.description;
+      const price = document.createElement("strong");
+      price.textContent = product.priceLabel;
+      const seller = document.createElement("a");
+      seller.href = product.sellerUrl;
+      seller.target = "_blank";
+      seller.rel = "noopener noreferrer sponsored";
+      seller.textContent = product.affiliate ? "View offer" : "Visit seller";
+      body.append(brand,title,description,price,seller);
+      card.append(image,body);
+      catalogGrid.append(card);
+    });
+    if (catalogCount) catalogCount.textContent = items.length + (items.length === 1 ? " listing" : " listings");
+    if (catalogEmpty) catalogEmpty.hidden = items.length > 0;
+  };
+  catalogSearch?.addEventListener("input", renderCatalog);
+  catalogSort?.addEventListener("change", renderCatalog);
+  renderCatalog();
+}
