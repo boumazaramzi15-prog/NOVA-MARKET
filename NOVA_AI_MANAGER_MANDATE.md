@@ -216,3 +216,41 @@ Owner requirement: **Any content or data update made in NOVA must be reflected o
 4. Report measured propagation times per platform, test environment/build versions, failures and any unsupported/offline limitations. Do not claim same-minute synchronization is implemented until these tests pass on actual deployed services and supported clients.
 
 This directive defines the required behavior; it does not mean shared live synchronization, backend services or application builds have already been implemented.
+
+
+## NEW OWNER DIRECTIVE — Show base product price first, calculate destination costs at checkout
+
+Owner requirement: On NOVA product cards and product pages, show the **product price only**, excluding delivery and other destination-dependent charges. Do not silently add estimated fees to that displayed base price. Clearly label it as the product price, with delivery/taxes/other applicable charges calculated and shown separately before the customer confirms payment.
+
+### Customer checkout journey
+1. The customer selects a NOVA-owned product and its required options/quantity. Show the product price and currency clearly; state that delivery and applicable destination charges are calculated after the delivery location is provided.
+2. At checkout, collect only the information needed to quote and fulfil the order. Ask for the destination country and postal/region/city/address as required by the carrier and supplier. Collect recipient name and contact details only when required for delivery, account, fraud prevention or legal obligations.
+3. After the customer provides the destination details, invoke the approved shipping/tax/fee calculation services and supplier/carrier quote sources. An AI pricing/checkout assistant may coordinate these services, validate the result, explain the breakdown and present it to the customer; it must not invent or guess fees.
+4. Before payment, show a clear itemized summary: product price, quantity, delivery/shipping, taxes/VAT, customs/import duties or handling charges where reliably calculable, payment/provider fees only if contractually chargeable to the customer and legally permitted, discounts, and the final payable total with currency.
+5. Identify charges that cannot be determined at checkout (for example, duties assessed by the destination authority on import). Explain clearly whether they are excluded and may be payable on delivery; never present an uncertain estimate as a guaranteed final charge.
+6. Let the customer review and explicitly confirm the complete order total before initiating payment. If a quote expires or supplier/carrier costs change before payment, recalculate and ask the customer to approve the revised total; never charge an undisclosed difference.
+7. Keep person-to-person classified ads outside this NOVA direct-sales checkout and fee calculation unless the owner separately approves a different model.
+
+### Pricing, discount and profit protection
+- Keep the displayed base product price distinct from destination-dependent checkout costs.
+- Apply a supplier discount to NOVA's sourcing cost where it is genuinely available and verified. Do not automatically copy a supplier's retail promotion or discount percentage as NOVA's customer discount.
+- Show a customer discount only when the owner-approved pricing rules authorize it and the resulting order remains profitable after product cost, fulfilment, shipping subsidies, payment fees, currency conversion, taxes borne by NOVA, refunds/returns allowance and other applicable costs.
+- Calculate and verify NOVA's expected net margin privately before allowing checkout. Never expose supplier cost, internal margin or confidential commercial terms to the customer.
+- If a valid shipping/tax quote or cost input is unavailable, show that the total cannot yet be confirmed and block payment or request manual review; do not fabricate a total or promise free shipping.
+- Recheck product availability and all relevant quotes immediately before payment/order submission. Do not place a supplier order until the customer's payment is confirmed and the applicable approval rules are satisfied.
+
+### Personal-data protection
+- Explain why each checkout field is needed and obtain any required consent before sharing address/contact information with a supplier, carrier, tax/shipping service or other processor.
+- Send only the minimum necessary customer data to each authorized service; do not send personal details to a general-purpose AI model unless an approved privacy/security assessment and lawful basis explicitly permit it.
+- Keep addresses, phone numbers, email addresses and order details out of public product pages, analytics events, logs, AI prompts and GitHub. Encrypt data in transit and at rest, restrict staff/service access, define retention/deletion periods and support applicable privacy rights.
+- The AI assistant should receive only the destination and order attributes necessary for a quote whenever possible, preferably through controlled backend tools; it must not retain or reveal personal information.
+
+### Acceptance tests and reporting
+1. Verify that catalogue/product pages display only the base product price and clearly disclose that destination costs are calculated later.
+2. Test multiple destination countries/regions and verify every displayed fee comes from a current, traceable carrier, supplier, tax or payment-provider source.
+3. Verify the checkout breakdown and final total are shown before payment, with explicit customer approval and correct currency/rounding.
+4. Test missing, expired, changed and unavailable quotes; payment must be blocked or reconfirmed when the total is uncertain or changes.
+5. Verify profit-floor rules, supplier discount handling, privacy permissions, data minimization and separation from person-to-person listings.
+6. Report actual service integrations, countries covered, quote accuracy/limitations and test results. Do not claim AI fee calculation or live checkout is operational until the backend integrations and end-to-end tests are deployed and passed.
+
+This directive defines the intended customer journey; it does not mean shipping, tax, AI calculation, personal-data processing or payment integrations are currently live.
