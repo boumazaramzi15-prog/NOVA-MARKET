@@ -183,3 +183,36 @@ Owner requirement: NOVA MARKET must be usable as an app on phones and as an app 
 6. Clearly report which platform builds actually exist, their signing/installation status, test results, and any external account, certificate, fee or owner approval still required.
 
 Do not describe a mobile-only build as Windows support. Do not describe a browser page as a packaged Windows desktop app unless the installable PWA experience is actually implemented and tested. This directive records the owner's requirement; it does not mean any new app build has already been created or published.
+
+
+## NEW OWNER DIRECTIVE — Same-minute synchronization across website and every app
+
+Owner requirement: **Any content or data update made in NOVA must be reflected on the website and all NOVA applications within the same minute**, without requiring users to manually refresh or install a new app version for ordinary data changes.
+
+### Single source of truth
+- Use one shared, authoritative backend and database for the website, Android app, iOS app and Windows app. Do not maintain separate independently editable catalogues, inventories, order records, listing records, prices or user settings per platform.
+- All platforms must read and write through the same authenticated backend APIs and permission rules. A change accepted by the backend becomes the canonical version for every platform.
+- Synchronize ordinary business data (including product details, approved prices, stock/availability, categories, listings and moderation status, orders and status, account preferences, favourites and supported settings) across all clients.
+
+### Same-minute propagation
+- Target propagation to all online clients within 60 seconds of a successful backend commit; aim for near-real-time updates where practical.
+- Implement a reliable change-notification mechanism such as WebSockets or Server-Sent Events, with push notifications where appropriate and permitted. Use polling or a safe refresh fallback if a persistent connection is unavailable.
+- Invalidate or refresh relevant client caches when a change event arrives. Do not let stale cached values overwrite newer server data.
+- Use version numbers, timestamps or equivalent ordering metadata, idempotent event handling, retry/reconnect logic and conflict resolution so clients converge on the latest canonical state.
+- If a device is offline, queue safe local actions only where explicitly supported; when it reconnects, reconcile with the backend and fetch the latest state. Clearly indicate pending/offline changes and never promise same-minute delivery to a disconnected device.
+- Ordinary data/content changes must not require a new app-store release. A new app build is required only when the application code or platform package itself changes.
+
+### Security and operational safeguards
+- Enforce server-side authorization for every update and every subscription; users must receive only data they are allowed to access.
+- Keep private account data, seller contact details, moderation notes and internal supplier/cost data out of public broadcasts and unauthorized clients.
+- Publish change events only after the corresponding database transaction commits. Do not broadcast failed, unapproved or rolled-back changes.
+- Preserve approval gates: synchronization must not automatically publish pending listings, unverified products, unapproved prices or other content awaiting owner/moderator approval.
+- Log synchronization failures and monitor event delivery, client lag, reconnects and data-version mismatches. Provide a recovery path that performs a full authoritative refresh.
+
+### Acceptance tests and reporting
+1. Update a test product or setting once through the authorized backend/admin flow and verify the updated value appears on website, Android, iOS and Windows clients within 60 seconds while each client is online.
+2. Verify no manual refresh is needed for connected clients; test reconnect and offline recovery separately.
+3. Test simultaneous edits, duplicate/replayed events, failed transactions, cache invalidation, permission boundaries and unapproved/pending content.
+4. Report measured propagation times per platform, test environment/build versions, failures and any unsupported/offline limitations. Do not claim same-minute synchronization is implemented until these tests pass on actual deployed services and supported clients.
+
+This directive defines the required behavior; it does not mean shared live synchronization, backend services or application builds have already been implemented.
