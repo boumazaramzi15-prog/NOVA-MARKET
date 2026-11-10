@@ -99,3 +99,38 @@ Priority: expand NOVA's own direct-sales catalogue as broadly as practical, acro
 - The manager must not create supplier accounts, accept paid plans, purchase samples, sign agreements, place supplier orders, publish unverified items, change prices/margins, or enable live checkout without explicit owner approval.
 - Never claim that this catalogue collection is running automatically unless a real scheduled agent, connected data source, backend job and monitoring have been deployed and verified.
 - Deliver a progress report with counts for discovered, deduplicated, verified, draft and rejected products; list source coverage, blockers and exact files/tests. Do not report candidate count as verified catalogue count.
+
+
+## NEW OWNER DIRECTIVE — Make NOVA available on phones, tablets and computers
+
+Goal: deliver NOVA MARKET as a reliable cross-platform service:
+- Android phones and tablets: publish an installable app through Google Play after all requirements and review are passed.
+- Apple iPhone and iPad: prepare and publish an iOS app through the Apple App Store; Google Play does not distribute iOS apps.
+- Computers: provide a responsive web experience for desktop and laptop browsers, with installable PWA support where technically appropriate.
+- Keep the user experience, catalogue, accounts, favourites, order history and approved features consistent across platforms, subject to platform capabilities.
+
+### Engineering requirements
+- First make the existing website fully responsive and accessible on small Android/iPhone screens, tablets and desktop/laptop displays.
+- Choose and document a maintainable cross-platform approach (for example, a shared web/PWA foundation plus native or cross-platform mobile wrappers where needed). Do not assume one Play Store package runs on Apple devices or desktop computers.
+- Use shared, secure backend APIs; never embed secret keys or privileged credentials in mobile apps or frontend code.
+- Support Arabic RTL and English, adaptive layouts, accessible controls, robust loading/error/empty states, and reasonable performance on lower-end phones and slower networks.
+- Implement secure authentication, privacy controls, account deletion where required, consent and data disclosures, and secure handling of user-generated content before public release.
+- Add platform-appropriate push notifications only with user permission and a documented notification preference flow.
+- Test on representative Android and iOS devices/simulators, multiple screen sizes, and current desktop browsers. Include automated tests, accessibility checks, performance checks and security review.
+
+### Store publication requirements
+- Prepare Android package identifiers, signing, app icons, screenshots, store listing, privacy policy, support contact, content rating, data safety declarations and Google Play compliance materials.
+- Prepare Apple bundle identifiers, signing/provisioning, app icons, screenshots, App Store listing, privacy disclosures, age rating, support details and Apple review compliance materials.
+- Do not claim either app is published or approved until the relevant store confirms approval and the public listing is accessible.
+- App Store / Play Store developer accounts, identity verification, fees, legal entity requirements and final submissions require owner participation and explicit approval. Never purchase accounts or submit legal declarations on the owner's behalf without approval.
+- Before release, verify payment flows against each platform's rules; do not assume a web payment integration can be used unchanged for digital goods or in-app purchases.
+
+### Delivery gates
+1. Audit the current website and repository; report what is reusable and what is missing.
+2. Implement responsive web/PWA experience and shared API architecture.
+3. Implement and test Android and iOS builds using the selected approach.
+4. Complete privacy, security, accessibility, performance and store-policy reviews.
+5. Prepare store assets and submission packages.
+6. Submit only after the owner approves accounts, fees, legal declarations and final release candidate.
+
+Never describe a responsive website, PWA, prototype, emulator build or unsigned package as an app published in a store. Report exact supported platforms, tested devices/browsers, build artifacts, test results, remaining owner actions and publication status separately.
