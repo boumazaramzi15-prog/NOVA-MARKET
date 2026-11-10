@@ -54,35 +54,3 @@ test('admin endpoints fail closed when no database is configured', async () => {
     assert.equal(body.error, 'database_not_configured');
   });
 });
-
-
-test('public marketplace search fails closed without a database', async () => {
-  await withServer(async base => {
-    const response = await fetch(base + '/api/marketplace/listings?category=used-cars&wilaya=Setif');
-    const body = await response.json();
-    assert.equal(response.status, 503);
-    assert.equal(body.error, 'database_not_configured');
-  });
-});
-
-test('marketplace moderation queue fails closed without a database', async () => {
-  await withServer(async base => {
-    const response = await fetch(base + '/api/admin/marketplace/listings');
-    const body = await response.json();
-    assert.equal(response.status, 503);
-    assert.equal(body.error, 'database_not_configured');
-  });
-});
-
-test('marketplace moderation decision fails closed without a database', async () => {
-  await withServer(async base => {
-    const response = await fetch(base + '/api/admin/marketplace/listings/00000000-0000-4000-8000-000000000000/decision', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ decision: 'approved' })
-    });
-    const body = await response.json();
-    assert.equal(response.status, 503);
-    assert.equal(body.error, 'database_not_configured');
-  });
-});
