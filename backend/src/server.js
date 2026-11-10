@@ -49,7 +49,7 @@ app.get('/api/languages', dbRequired, asyncRoute(async(req,res)=>{
 app.get('/api/products', dbRequired, asyncRoute(async(req,res)=>{
   const language=(req.query.lang||'en').toString().slice(0,35);
   const {rows}=await pool.query(`
-    SELECT p.id,p.slug,p.category_code,p.public_price,p.public_currency,
+    SELECT p.id,p.slug,p.category_code,p.public_price,p.public_currency,p.image_url,
       COALESCE(t.title,p.source_title) AS title,
       COALESCE(t.description,p.source_description) AS description,
       p.published_at
