@@ -87,6 +87,12 @@ if (catalogGrid) {
       image.src = product.image;
       image.alt = product.title;
       image.loading = "lazy";
+      const media = document.createElement("div");
+      media.className = "nova-watermark-wrap";
+      const watermark = document.createElement("span");
+      watermark.className = "nova-watermark";
+      watermark.textContent = "NOVA MARKET";
+      media.append(image, watermark);
       const body = document.createElement("div");
       body.className = "catalog-card-body";
       const brand = document.createElement("small");
@@ -103,7 +109,7 @@ if (catalogGrid) {
       seller.rel = "noopener noreferrer sponsored";
       seller.textContent = product.affiliate ? "View offer" : "Visit seller";
       body.append(brand,title,description,price,seller);
-      card.append(image,body);
+      card.append(media,body);
       catalogGrid.append(card);
     });
     if (catalogCount) catalogCount.textContent = items.length + (items.length === 1 ? " listing" : " listings");
