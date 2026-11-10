@@ -123,7 +123,7 @@ if (catalogGrid) {
       seller.target = "_blank";
       seller.rel = "noopener noreferrer sponsored";
       seller.textContent = product.affiliate ? "View offer" : "Visit seller";
-      body.append(brand,title,description,price,seller);
+      body.append(brand,title,description,seller);
       card.append(media,body);
       catalogGrid.append(card);
     });
