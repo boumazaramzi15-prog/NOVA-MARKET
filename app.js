@@ -83,16 +83,31 @@ if (catalogGrid) {
     items.forEach(product => {
       const card = document.createElement("article");
       card.className = "catalog-card";
-      const image = document.createElement("img");
-      image.src = product.image;
-      image.alt = product.title;
-      image.loading = "lazy";
       const media = document.createElement("div");
       media.className = "nova-watermark-wrap";
+      const videoUrl = product.videoUrl || product.video_url || "";
+      let mediaElement;
+      if (videoUrl) {
+        mediaElement = document.createElement("video");
+        mediaElement.src = videoUrl;
+        mediaElement.controls = true;
+        mediaElement.playsInline = true;
+        mediaElement.preload = "metadata";
+        mediaElement.setAttribute("aria-label", product.title);
+      } else {
+        mediaElement = document.createElement("img");
+        mediaElement.src = product.image;
+        mediaElement.alt = product.title;
+        mediaElement.loading = "lazy";
+      }
       const watermark = document.createElement("span");
       watermark.className = "nova-watermark";
       watermark.textContent = "NOVA MARKET";
-      media.append(image, watermark);
+      const priceBadge = document.createElement("span");
+      priceBadge.className = "nova-price-badge";
+      priceBadge.textContent = product.priceLabel || "";
+      media.append(mediaElement, watermark);
+      if (priceBadge.textContent) media.append(priceBadge);
       const body = document.createElement("div");
       body.className = "catalog-card-body";
       const brand = document.createElement("small");
