@@ -330,3 +330,34 @@ Owner requirement: NOVA MARKET must prevent avoidable disputes by accepting orde
 5. Report destination/product coverage, evidence sources, last-check dates, blocked cases and test results. Never claim a country/product is cleared unless the relevant checks have actually been completed.
 
 This directive defines required controls; it does not mean destination screening, supplier integrations, legal checks or checkout blocking are currently implemented or live.
+
+
+## NEW OWNER DIRECTIVE — NOVA blind-shipping and neutral-parcel supplier request
+
+Owner requirement: When NOVA purchases a customer's order from a supplier for direct fulfilment, the order workflow should automatically send the supplier a clear fulfilment instruction requesting neutral / blind shipping so the parcel does not advertise the supplier's brand to NOVA's customer.
+
+### Automatic supplier instruction
+- After the customer's order is confirmed and the supplier order is ready to be submitted, send the supplier the approved instruction below through the supplier's supported order notes, API or messaging channel:
+  
+  "Please fulfil this order on behalf of NOVA MARKET. Use neutral, unbranded packaging where available. Do not include supplier-branded marketing materials, promotional flyers, catalogues, business cards, QR codes, discount coupons, or invoices showing supplier retail branding or supplier sales details to the end customer. Do not add your own logo or store name to the outer parcel or product presentation where removal is supported. Please do not contact or market directly to the end customer for promotional purposes. If NOVA MARKET-branded packaging or inserts are available and authorized, use them only according to NOVA's approved brand files and instructions. Please confirm any extra fee or limitation before dispatch."
+
+- Include the NOVA order reference and only the minimum delivery/order information the supplier needs to fulfil the shipment. Never send unrelated customer data.
+- Record the instruction, supplier response, timestamp, order reference and any extra charge or limitation in the order audit trail.
+- If the supplier cannot support neutral packaging, charges an additional fee, or does not confirm the request, flag the order for owner review before submission/dispatch where practical. Do not claim blind shipping is guaranteed.
+- Do not automatically pay for branded packaging, custom inserts, packaging upgrades or other extra services without explicit owner approval.
+
+### Legal and fulfilment safeguards
+- This is a request for neutral presentation / blind dropshipping; it does not authorize false customs declarations, undervaluation, false country-of-origin statements, removal of legally required sender/importer details, concealment of safety information, or omission of documents required by customs, tax, consumer or product-safety law.
+- Preserve accurate invoices, customs declarations, product labels, safety notices, warranty information and legally required sender/return details. Where a supplier must identify itself for legal or carrier reasons, comply and disclose the limitation to NOVA internally.
+- Do not claim NOVA manufactures the product, owns the supplier's factory, or is an authorized brand owner unless that is factually true and documented. NOVA may present itself as the retailer / seller of record only where its legal and commercial arrangements support that role.
+- Do not remove third-party trademarks from products or packaging where doing so would breach intellectual-property rights, product-safety rules or supplier agreements. Request neutral outer packaging and removal of optional promotional materials only where permitted.
+- Customer-facing order communications should identify NOVA as the customer's point of contact, while preserving all legally required seller, manufacturer, importer and warranty disclosures.
+
+### Automation and acceptance tests
+1. Verify the supplier instruction is attached to every eligible NOVA direct-sale supplier order before submission.
+2. Verify that supplier-specific exceptions, fees and confirmations are recorded and escalated when needed.
+3. Test that no customer order is sent twice because of retries; use idempotency and an auditable send status.
+4. Verify customs, tax, safety and legally required documents are never suppressed or falsified.
+5. Report which supplier channels support automated order notes/messages and which require manual action. Do not claim automated messaging is live until a real supplier integration is connected and end-to-end tested.
+
+This directive defines the required blind-shipping workflow; it does not mean supplier messaging, integrations or neutral packaging are currently operational or guaranteed.
