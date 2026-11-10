@@ -134,3 +134,30 @@ Goal: deliver NOVA MARKET as a reliable cross-platform service:
 6. Submit only after the owner approves accounts, fees, legal declarations and final release candidate.
 
 Never describe a responsive website, PWA, prototype, emulator build or unsigned package as an app published in a store. Report exact supported platforms, tested devices/browsers, build artifacts, test results, remaining owner actions and publication status separately.
+
+## NEW OWNER DIRECTIVE — Worldwide language coverage across website and apps
+
+Owner requirement: NOVA MARKET must be designed for **all languages of the world, without intentionally excluding any language**, across the website, PWA and Android/iOS applications. Arabic must remain supported permanently; do not remove it, hide it, or make it the only default. English, French, German and every other language must be supported through the same extensible system.
+
+### Language and locale requirements
+- Build a language architecture that can add and serve every language and locale that can be represented and supported by the platform, including regional variants, local scripts and right-to-left (RTL), left-to-right (LTR) and bidirectional text.
+- Use Unicode end-to-end and standards-based locale/language identifiers (BCP 47). Do not hard-code a short fixed list of languages into application logic or database schemas.
+- Provide a language selector that lets each visitor/user choose their preferred language on the website and in every app. Respect an explicit saved choice; otherwise use a sensible browser/device-language suggestion and allow the user to change it at any time.
+- Localize all user-facing surfaces, not just the home page: navigation, buttons, forms, validation, errors, empty/loading states, account and privacy screens, catalogue/category labels, product content, search/filter controls, checkout/order status, notifications, help and legal/support content.
+- Support locale-aware dates, times, numbers, currencies, plural rules, sorting and address formats. Keep transaction amounts and original product/source data unambiguous; translation must never alter prices, legal terms, product specifications or other critical facts.
+- Support mixed-language content and correct font fallback, text shaping, line breaking, accessibility labels and layout expansion. Test RTL/LTR switching and scripts with different writing directions and character sets on phones, tablets and computers.
+- Keep translation resources separate from application code, use translation keys rather than embedded UI strings, and provide a scalable workflow for adding languages without rebuilding the entire product architecture.
+- For product titles/descriptions and user-generated listings, preserve the original language and make translated versions clearly identifiable. Never fabricate a translation or imply human review where none occurred.
+- Machine translation may be used as a draft where appropriate, but mark unreviewed translations internally and require human review for safety-critical, legal, payment, policy and other high-impact content before presenting it as authoritative.
+- If a language or locale lacks a verified translation for a particular string, use a clearly handled fallback and never show blank UI or broken keys. Do not claim complete, high-quality coverage for a language until its content has been translated and tested.
+- Provide accessible language names (prefer native language names where practical), keyboard/screen-reader support, and search within the language selector for a very large language list.
+- Do not impose English or any other language as the only language. Do not delete existing Arabic translations or Arabic RTL support during redesigns, migrations or app releases.
+
+### Delivery and verification gates
+1. Audit all existing website, backend, database, PWA and app strings and identify untranslated or hard-coded text.
+2. Implement a shared, scalable internationalization/localization foundation used consistently by the website and Android/iOS apps.
+3. Build the language/locale registry and translation-management workflow so additional languages can be added continuously, rather than limiting NOVA to a fixed handful.
+4. Test representative scripts, RTL/LTR and bidirectional text, long translations, locale formatting, search, accessibility and language switching across supported devices and browsers.
+5. Report the exact languages/locales actually translated and tested, remaining untranslated content, fallback behavior and any technical limitations. Never claim that every language is fully translated merely because the architecture can accept it.
+
+This directive records the owner's global-language requirement; it does not mean that all translations, language data, apps or website changes have already been implemented or published.
