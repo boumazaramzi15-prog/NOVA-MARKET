@@ -254,3 +254,45 @@ Owner requirement: On NOVA product cards and product pages, show the **product p
 6. Report actual service integrations, countries covered, quote accuracy/limitations and test results. Do not claim AI fee calculation or live checkout is operational until the backend integrations and end-to-end tests are deployed and passed.
 
 This directive defines the intended customer journey; it does not mean shipping, tax, AI calculation, personal-data processing or payment integrations are currently live.
+
+
+## NEW OWNER DIRECTIVE — Cancellation handling and supplier/carrier refund verification
+
+Owner requirement: When a customer requests cancellation of a NOVA direct-sale order, NOVA AI MANAGER must first check the actual order stage and the supplier/carrier cancellation and refund terms. **Do not automatically promise or issue a full refund until the recoverable amounts and applicable policy have been verified.**
+
+### Cancellation workflow
+1. Immediately record the customer's cancellation request with timestamp and order ID, acknowledge receipt, and place the order into a cancellation-review state. Do not mark it cancelled or refunded merely because the request was received.
+2. Check the order stage:
+   - **Not yet submitted to supplier:** stop fulfilment and verify whether any payment/provider fees or other costs are non-refundable.
+   - **Submitted to supplier but not dispatched:** contact/check the supplier's actual cancellation policy and obtain confirmation of whether the supplier accepts cancellation and what amount will be returned.
+   - **Dispatched / handed to carrier:** check whether interception, return-to-sender or refusal is possible; verify carrier charges, return-shipping charges, and supplier return eligibility before calculating any refund.
+   - **Delivered:** handle as a return request under the applicable NOVA policy and destination-country consumer law, not as a simple pre-dispatch cancellation.
+3. Verify each amount from the relevant supplier, carrier, fulfilment provider and payment provider records or written confirmation. Record the source, date/time checked, currency, amount, status and any expected refund date.
+4. Distinguish clearly between:
+   - product/supplier amount recoverable;
+   - outbound shipping charge recoverable or non-refundable;
+   - return/interception shipping and handling costs;
+   - payment processing or currency-conversion fees that are actually non-refundable;
+   - taxes/duties and whether they can be reclaimed;
+   - any other documented, lawful and policy-permitted deductions.
+5. Calculate the customer's refund according to the published NOVA cancellation/returns policy and mandatory consumer law in the customer's destination country. Do not deduct costs from the customer unless the deduction is lawful, disclosed in advance and supported by the applicable policy and evidence.
+6. Give the customer a clear status update: cancellation requested, supplier/carrier confirmation pending, cancellation accepted/rejected, expected refundable amount or why it is not yet determinable, and the expected processing timeline once confirmed.
+7. Issue a refund only after the cancellation/return outcome and refund amount are verified, through the original payment method where required and supported. Record the payment-provider refund reference and final status. Never claim a refund has been sent until the provider confirms it.
+8. If the supplier or carrier has not replied, the refund is disputed, the amount is unclear, or the case involves legal exceptions, escalate to a human/owner for review. Do not invent an outcome or silently close the request.
+
+### Customer fairness and financial controls
+- Do not assume every supplier or shipping company returns money after cancellation. Check the specific supplier, service, shipment stage and destination terms for each order.
+- Do not assume that a carrier's refund to NOVA automatically determines the customer's legal refund entitlement; NOVA must follow its customer-facing policy and applicable law.
+- Keep internal supplier costs, recovery negotiations and NOVA margin private. Explain customer-facing charges and refund calculations transparently.
+- Maintain an auditable record of the request, supplier/carrier responses, evidence, calculation, approvals, customer communications and payment-provider result.
+- Keep person-to-person classified advertisements outside this NOVA order-cancellation workflow unless the owner separately approves otherwise.
+- Do not spend money, pay return/interception fees, accept supplier penalties, or make exceptional refund decisions without the required owner approval.
+
+### Acceptance tests and reporting
+1. Test cancellation before supplier submission, after supplier acceptance but before dispatch, after dispatch and after delivery.
+2. Verify supplier/carrier refundability from real documented terms or confirmations, including partial and non-refundable charges.
+3. Verify refund calculations, lawful customer disclosures, approval gates and original-payment-method handling.
+4. Test delayed/no supplier response, carrier refusal, failed refund and duplicate cancellation/refund events.
+5. Report actual integrations and test results. Do not claim automated supplier/carrier checks or refunds are live until the relevant services are connected and end-to-end tests pass.
+
+This directive defines the required cancellation process; it does not mean supplier/carrier integrations, cancellation automation or refunds are currently operational.
