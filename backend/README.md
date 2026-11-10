@@ -25,3 +25,10 @@ This folder contains the first database schema blueprint for NOVA MARKET. It is 
 
 ## Important launch blockers
 The business entity and sales jurisdictions, payment provider eligibility for the actual seller, supplier API access, destination shipping coverage, taxes/customs, returns route, and legal policies still require verification. A static GitHub Pages site alone is not a secure dropshipping backend.
+
+
+## API service added
+- `src/server.js` provides a Node.js/Express API for public published products and languages, owner-only draft product management, publication approval requests, approval review and supplier-status readout.
+- `package.json`, `.env.example`, `.gitignore`, `test/api.test.js`, and `DEPLOYMENT.md` provide the runnable service foundation.
+- Checkout deliberately returns HTTP 503. No payment gateway, customer order intake or supplier fulfilment is enabled.
+- Configure a PostgreSQL database and a long random owner token only in a private runtime secret store. The bootstrap bearer-token gate is for controlled development only and must be replaced by audited identity management before production.
