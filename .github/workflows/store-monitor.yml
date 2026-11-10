@@ -1,0 +1,37 @@
+name: NOVA MARKET Store Monitor
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nova-store-monitor
+  cancel-in-progress: true
+
+jobs:
+  check-storefront:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check public storefront
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://boumazaramzi15-prog.github.io/NOVA-MARKET/"
+          CODE="$(curl --silent --show-error --location --output /tmp/nova-home.html --write-out '%{http_code}' --max-time 30 "$URL")"
+          echo "Storefront HTTP status: $CODE"
+          test "$CODE" = "200"
+          grep -qi "NOVA MARKET" /tmp/nova-home.html
+      - name: Check store page
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://boumazaramzi15-prog.github.io/NOVA-MARKET/store.html"
+          CODE="$(curl --silent --show-error --location --output /tmp/nova-store.html --write-out '%{http_code}' --max-time 30 "$URL")"
+          echo "Store page HTTP status: $CODE"
+          test "$CODE" = "200"
+          grep -qi "NOVA MARKET" /tmp/nova-store.html
