@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Shop NOVA MARKET collections. Product listings will appear after supplier, price and shipping verification.">
+<meta name="theme-color" content="#101827"><title>Shop — NOVA MARKET</title>
+<link rel="stylesheet" href="store.css">
+</head>
+<body>
+<div class="topline" data-i18n="topline">NOVA MARKET · A global store in preparation</div>
+<header class="header"><a class="logo" href="store.html"><span>N</span> NOVA MARKET</a><nav><a href="store.html#collections" data-i18n="collections">Collections</a><a href="about.html" data-i18n="about">About</a><a href="shipping.html" data-i18n="shipping">Shipping</a><a href="returns.html" data-i18n="returns">Returns</a></nav><div class="tools"><select id="language" aria-label="Language"><option value="en">English</option><option value="ar">العربية</option></select><button id="cartOpen" class="cart-button"><span data-i18n="cart">Cart</span> <b id="cartCount">0</b></button></div></header>
+<main>
+<section class="hero"><div><p class="eyebrow" data-i18n="eyebrow">DISCOVER · CHOOSE · SHOP</p><h1 data-i18n="heroTitle">A better way to find what you need.</h1><p data-i18n="heroText">Explore thoughtfully selected products across everyday life. We are preparing verified listings and delivery options before opening checkout.</p><a class="primary" href="#collections" data-i18n="browse">Browse collections</a></div><div class="hero-art"><span>NOVA</span><small>MARKETPLACE</small></div></section>
+<section id="collections" class="section"><div class="section-head"><div><p class="eyebrow" data-i18n="shopBy">SHOP BY INTEREST</p><h2 data-i18n="collectionsTitle">Explore collections</h2></div><p data-i18n="collectionHint">Choose a category to explore upcoming products.</p></div><div class="collection-grid" id="collectionGrid"></div></section>
+<section class="section product-section"><div class="section-head"><div><p class="eyebrow" data-i18n="verified">VERIFIED LISTINGS ONLY</p><h2 data-i18n="productsTitle">Featured products</h2></div><div class="filters"><input id="productSearch" type="search" placeholder="Search products" aria-label="Search products"><select id="sort"><option value="featured">Featured</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option></select></div></div><div id="productGrid" class="product-grid"></div><div id="emptyProducts" class="empty"><div class="empty-icon">✦</div><h3 data-i18n="emptyTitle">Our first collection is being prepared</h3><p data-i18n="emptyText">No products are available to buy yet. We will publish listings only after checking supplier availability, product details, total cost and shipping destinations.</p></div></section>
+<section class="promise"><h2 data-i18n="promiseTitle">Shopping with clarity.</h2><p data-i18n="promiseText">Before launch, every listing must show its price, delivery coverage, estimated shipping, seller support and return conditions. Checkout remains closed until secure payment and fulfilment are ready.</p></section>
+</main>
+<footer><div><a class="logo" href="store.html"><span>N</span> NOVA MARKET</a><p data-i18n="footerText">A global direct-to-customer store in preparation.</p></div><div class="footer-links"><a href="about.html" data-i18n="about">About</a><a href="contact.html" data-i18n="contact">Contact</a><a href="privacy.html" data-i18n="privacy">Privacy</a><a href="terms.html" data-i18n="terms">Terms</a><a href="shipping.html" data-i18n="shipping">Shipping</a><a href="returns.html" data-i18n="returns">Returns</a></div><small>© <span id="year"></span> NOVA MARKET</small></footer>
+<div id="cartPanel" class="cart-panel" aria-hidden="true"><div class="cart-head"><h2 data-i18n="yourCart">Your cart</h2><button id="cartClose" aria-label="Close cart">×</button></div><div id="cartItems"></div><div class="cart-bottom"><p id="cartTotal">Total: 0.00</p><button id="checkout" disabled data-i18n="checkoutUnavailable">Checkout unavailable</button><small data-i18n="checkoutNote">Checkout will open after payment, legal and supplier setup is complete.</small></div></div><div id="shade" class="shade"></div>
+<script src="store.js"></script>
+</body></html>
