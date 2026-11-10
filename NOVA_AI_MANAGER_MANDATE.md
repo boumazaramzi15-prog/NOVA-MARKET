@@ -65,3 +65,37 @@ Car-parts fields should include part name, compatible make/model/year range, con
 
 ## Completion reporting
 For every implementation step, report the exact files/commit, tests run and pass/fail status. Clearly separate completed code from features requiring external accounts, secrets, production services, legal review or owner action. Never describe a planned or mocked feature as live.
+
+
+## NEW OWNER DIRECTIVE — Build a deep NOVA-owned product catalogue
+
+Priority: expand NOVA's own direct-sales catalogue as broadly as practical, across eligible product categories and international markets. The goal is a large, useful, well-organized catalogue — not a page padded with invented or unverified items.
+
+### Product discovery and sourcing
+- Research products from legitimate suppliers, manufacturers, wholesalers and dropshipping platforms that can lawfully fulfil orders to the intended destination countries.
+- Cover a broad range of everyday categories where supplier evidence and fulfilment are available: electronics and accessories, computers, phones and accessories, home and kitchen, tools, automotive parts/accessories, fashion, shoes, bags, beauty/personal care, sports/outdoors, toys, office supplies and other suitable general merchandise.
+- Keep regulated, hazardous, counterfeit, recalled, restricted or legally sensitive goods out of the catalogue unless the owner has explicitly approved a compliant category and all required checks are documented.
+- For every candidate, record source/supplier name, source URL or supplier product ID, date checked, product identifier/SKU, variant details, wholesale cost, currency, destination-country availability, shipping cost and estimated delivery range, return policy, and any applicable restrictions.
+- Confirm that images and product descriptions may legally be reused; prefer supplier-provided authorized media. Do not scrape or copy protected content in breach of source terms.
+- Deduplicate by supplier SKU/GTIN/model and normalized product attributes. Merge variants under one product where appropriate.
+
+### Verification before publishing
+- Never invent a product, supplier, price, discount, stock level, rating, review, shipping promise, warranty or delivery date.
+- A product may be marked READY only when supplier identity/source, current price, availability, shipping destination, shipping cost/timing, returns terms and permitted media have been checked.
+- If any key field is unknown or stale, keep the item in DRAFT / NEEDS_VERIFICATION and do not show it as purchasable.
+- Store the timestamp and source of every volatile field (price, stock, shipping and availability); re-check before checkout and before supplier order submission.
+- Display destination-specific availability, shipping and possible customs/tax notices. Never imply worldwide shipping unless each destination is supported.
+- Calculate retail pricing only from verified costs and owner-approved margin, fee, currency-conversion and tax rules. Do not set or change commercial margins without owner approval.
+- Keep supplier cost and internal margin data private; expose only approved customer-facing fields.
+
+### Catalogue organization and quality
+- Build a searchable catalogue with category/subcategory, brand, model, SKU, variants, specifications, condition, images, description, price/currency, stock status, shipping destinations and last-verified date.
+- Support Arabic RTL and English product content; preserve original source details internally and use accurate translations.
+- Prioritize useful breadth and quality over raw item count. Do not publish duplicate, low-quality, misleading or unsupported listings just to make the store look full.
+- Separate NOVA-owned direct-sale products from person-to-person classified advertisements at database, API, UI and checkout levels. Only NOVA-owned products may enter NOVA checkout.
+
+### Autonomy and approval gates
+- The manager may research, compare, deduplicate, enrich, translate and prepare draft catalogue records without spending money.
+- The manager must not create supplier accounts, accept paid plans, purchase samples, sign agreements, place supplier orders, publish unverified items, change prices/margins, or enable live checkout without explicit owner approval.
+- Never claim that this catalogue collection is running automatically unless a real scheduled agent, connected data source, backend job and monitoring have been deployed and verified.
+- Deliver a progress report with counts for discovered, deduplicated, verified, draft and rejected products; list source coverage, blockers and exact files/tests. Do not report candidate count as verified catalogue count.
