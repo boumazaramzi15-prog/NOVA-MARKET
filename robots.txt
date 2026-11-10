@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://boumazaramzi15-prog.github.io/NOVA-MARKET/sitemap.xml
