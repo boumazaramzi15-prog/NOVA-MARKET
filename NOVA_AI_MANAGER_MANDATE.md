@@ -296,3 +296,37 @@ Owner requirement: When a customer requests cancellation of a NOVA direct-sale o
 5. Report actual integrations and test results. Do not claim automated supplier/carrier checks or refunds are live until the relevant services are connected and end-to-end tests pass.
 
 This directive defines the required cancellation process; it does not mean supplier/carrier integrations, cancellation automation or refunds are currently operational.
+
+
+## NEW OWNER DIRECTIVE — Destination-country import eligibility and supplier-policy alignment
+
+Owner requirement: NOVA MARKET must prevent avoidable disputes by accepting orders only when the selected supplier can fulfil the exact product to the customer's destination and the product may lawfully be imported there. Supplier terms must be checked and aligned with NOVA's customer-facing operational policies, while mandatory consumer-protection and other applicable laws always take precedence.
+
+### Before listing or accepting an order
+- For every product and destination country, verify that the supplier currently ships that exact product/variant to the destination, and record the supplier/source, date checked, restrictions, shipping method, delivery estimate and applicable terms.
+- Check known destination-country import restrictions, prohibited/restricted goods, permits, sanctions and carrier limitations using reliable, current sources. Do not infer that a product is importable merely because the supplier lists it or ships it elsewhere.
+- If the supplier does not serve the destination, the product is prohibited/restricted without a verified required authorization, or reliable eligibility cannot be established, mark the product/destination as unavailable and block checkout for that destination.
+- If eligibility or shipping information is incomplete, conflicting or stale, do not accept payment. Keep the order in a verification/manual-review state until confirmed.
+- Recheck destination eligibility, supplier availability, shipping terms and relevant restrictions immediately before payment and before submitting the supplier order.
+
+### Supplier-policy alignment
+- Maintain a versioned record of each supplier's actual shipping, cancellation, return, refund, warranty and damaged/lost shipment terms, including source and last-verified date.
+- Align NOVA's operational procedures with the applicable supplier terms and disclose relevant customer-facing conditions clearly before purchase.
+- Do not promise shipping, cancellation, return, replacement, warranty coverage or refund outcomes that the supplier has not confirmed.
+- Supplier terms do not override mandatory laws or statutory customer rights in the customer's destination country. Where supplier terms conflict with applicable law or NOVA cannot fulfil its legal obligations, block the sale or escalate for legal/owner review; do not transfer an unlawful term to the customer.
+- If customs refuses or seizes a shipment, investigate the actual reason, supplier/carrier responsibility, destination rules and customer rights. Do not automatically deny a refund or charge the customer; apply the published policy and mandatory law based on documented facts.
+
+### Checkout disclosures and audit trail
+- Before payment, show the customer whether the product is eligible for delivery to the selected destination, the confirmed delivery terms, known import restrictions and any duties/taxes that are excluded or may be assessed by authorities.
+- Do not describe customs clearance as guaranteed. Do not promise that NOVA can prevent customs delays, seizure or refusal.
+- Keep evidence of destination checks, supplier confirmations, policy versions, customer disclosures, quote timestamps and order decisions for dispute handling.
+- Keep person-to-person classified advertisements separate; this destination/supplier fulfilment gate applies to NOVA-owned direct-sale products.
+
+### Acceptance tests and reporting
+1. Verify that a supplier-excluded destination is blocked before payment.
+2. Verify that prohibited/restricted or uncertain products are unavailable or routed to review, not purchasable by default.
+3. Verify that supplier terms are versioned and customer disclosures reflect the applicable policy without overriding mandatory law.
+4. Test changes to supplier shipping coverage, stale checks, conflicting information and customs refusal scenarios.
+5. Report destination/product coverage, evidence sources, last-check dates, blocked cases and test results. Never claim a country/product is cleared unless the relevant checks have actually been completed.
+
+This directive defines required controls; it does not mean destination screening, supplier integrations, legal checks or checkout blocking are currently implemented or live.
