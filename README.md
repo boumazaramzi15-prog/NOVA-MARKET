@@ -11,11 +11,6 @@ NOVA MARKET is being developed as a **direct-to-customer dropshipping store**, n
 - `NOVA_AI_MANAGER_ARCHITECTURE.md`: manager architecture and approval principles.
 - `SUPPLIERS.md`: supplier research register; supplier accounts and APIs are not connected.
 
-## Person-to-person marketplace (in development)
-The category navigation includes cars, car parts, used cars, motorcycles/scooters/quads, and real estate. A separate PostgreSQL migration draft defines seller, listing and listing-image records. The backend now includes a public search endpoint that selects only published listings and excludes common private contact/document keys, plus owner-token-protected moderation queue and approve/reject decision endpoints. An approval decision does not publish an ad automatically.
-
-These are backend code foundations only. Seller sign-up, secure end-user authentication, listing submission/editing, managed image uploads, moderation UI, publication workflow, reporting/blocking, anti-fraud controls and production database deployment are not yet implemented. The migration has not been applied to a live database. Do not invite public sellers or claim listings can currently be submitted.
-
 ## Important limitations
 This repository is a static preview. It does not yet have a production backend, live database, authentication, product catalogue, checkout, payment gateway, supplier API integration, order processing, fulfilment, tracking or customer service system. No real customer orders or payments can be accepted.
 
@@ -36,3 +31,6 @@ The storefront preview supports English and Arabic UI text and switches RTL layo
 
 ## Current implementation status (November 2026)
 The repository now contains a bilingual storefront prototype, customer information pages, a NOVA AI MANAGER dashboard client, a Node.js/Express backend API foundation, a PostgreSQL schema draft, and backend CI tests. These are committed source files only: no runtime host, database, authentication provider, payment gateway, supplier API, live product inventory, or order fulfilment connection has been provisioned. Checkout is deliberately disabled. See `backend/DEPLOYMENT.md` before any deployment.
+
+## Person-to-person marketplace (planned)
+The storefront category navigation includes cars, car parts, used cars, motorcycles/scooters/quads, and real estate. A draft PostgreSQL migration defines seller, listing and listing-image records with new listings defaulting to pending review. This is a schema blueprint only: seller registration, secure authentication, listing submission, image uploads, moderation UI, public search API, reporting/blocking and production deployment are not yet implemented. The migration has not been applied to a live database. Do not invite public sellers or claim that listings can currently be submitted.
