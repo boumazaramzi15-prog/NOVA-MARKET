@@ -27,3 +27,7 @@ The cart is a front-end demonstration only. Checkout is deliberately disabled. D
 
 ## Languages
 The storefront preview supports English and Arabic UI text and switches RTL layout for Arabic. This is not yet full multilingual coverage. The database and architecture plans are intended to support additional locales with translation review and publication controls.
+
+
+## Current implementation status (November 2026)
+The repository now contains a bilingual storefront prototype, customer information pages, a NOVA AI MANAGER dashboard client, a Node.js/Express backend API foundation, a PostgreSQL schema draft, and backend CI tests. These are committed source files only: no runtime host, database, authentication provider, payment gateway, supplier API, live product inventory, or order fulfilment connection has been provisioned. Checkout is deliberately disabled. See `backend/DEPLOYMENT.md` before any deployment.
