@@ -361,3 +361,39 @@ Owner requirement: When NOVA purchases a customer's order from a supplier for di
 5. Report which supplier channels support automated order notes/messages and which require manual action. Do not claim automated messaging is live until a real supplier integration is connected and end-to-end tested.
 
 This directive defines the required blind-shipping workflow; it does not mean supplier messaging, integrations or neutral packaging are currently operational or guaranteed.
+
+
+## NEW OWNER DIRECTIVE — NOVA supplier agent with mandatory owner payment approval
+
+Owner decision: NOVA AI MARKET may autonomously handle supplier research, communication and order preparation, but **every payment to a supplier requires the owner's explicit approval immediately before payment**. The agent must never pay a supplier automatically or treat customer order confirmation as permission to pay the supplier.
+
+### Permitted autonomous work (without spending money)
+- Discover and compare suppliers; verify supplier identity and contact channels.
+- Request quotations, negotiate prices and terms, check stock, variants, shipping destinations, delivery estimates, return/cancellation terms and neutral/blind-shipping capability.
+- Prepare supplier purchase orders and draft messages, attach the neutral-packaging instruction, request written confirmation, and track supplier responses.
+- Recheck price, stock, destination eligibility, shipping costs and supplier terms before presenting a purchase for approval.
+- Prepare order records, shipment follow-ups, tracking updates, exception reports and draft dispute/cancellation messages.
+- Keep a complete audit trail of supplier communications, quotations, evidence, timestamps, order references and status changes.
+
+### Mandatory payment approval gate
+- Before any supplier payment, present the owner with a clear approval screen/record containing supplier identity, verified supplier order details, product/variant/quantity, unit and total cost, currency, shipping and all known extra fees, destination, delivery estimate, refund/return terms, payment method and the NOVA/customer order reference.
+- The owner must give a specific, affirmative approval for that exact supplier, amount, currency and order. Approval for one order or amount does not authorize another order, a changed amount, a recurring payment or a later retry.
+- If the supplier changes the price, quantity, shipping, fees, payment destination or other material order detail, invalidate the previous approval and request a new one.
+- No payment may be initiated, captured, released or retried without the matching valid approval. No silence, timeout, preselected checkbox, general account permission or customer checkout confirmation counts as owner approval.
+- Use idempotency and payment-state checks to prevent duplicate charges. If payment status is uncertain, stop and reconcile with the payment provider before retrying.
+- If owner approval is declined or unavailable, keep the supplier order unpaid and pending; notify the owner and do not imply that the purchase or dispatch is confirmed.
+- Never store or request the owner's card PIN, password, one-time code or other authentication secret. Use an approved payment provider's secure authorization flow; the owner completes any required authentication directly.
+- Supplier refunds, cancellation penalties, return-shipping charges, upgrades, samples, subscriptions and any other supplier-side spending also require explicit owner approval unless a separate, narrowly defined written spending limit is later approved.
+
+### Separation of customer and supplier approvals
+- Customer confirmation and customer payment authorize only the customer-side transaction under NOVA's published checkout flow; they do not authorize the agent to pay the supplier.
+- A supplier order is not confirmed as paid or dispatched until the payment provider and supplier independently confirm the relevant statuses.
+- Do not promise a dispatch date based only on a prepared purchase order or pending payment.
+
+### Acceptance tests and reporting
+1. Verify that every supplier payment path is blocked without a matching owner approval.
+2. Verify approval is bound to the exact supplier, order, amount, currency and material order details.
+3. Verify any material change invalidates approval and requires a fresh approval.
+4. Test declined, expired, missing, duplicate and uncertain payment states; all must fail safely without duplicate payment.
+5. Verify the owner can review the complete cost and terms before approval, and every decision is auditable.
+6. Report which supplier messaging and payment integrations are actually connected and tested. This directive is a required design/implementation rule; it does not mean the supplier agent, payment approval UI, supplier integrations or automated payments are currently live.
