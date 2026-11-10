@@ -161,3 +161,25 @@ Owner requirement: NOVA MARKET must be designed for **all languages of the world
 5. Report the exact languages/locales actually translated and tested, remaining untranslated content, fallback behavior and any technical limitations. Never claim that every language is fully translated merely because the architecture can accept it.
 
 This directive records the owner's global-language requirement; it does not mean that all translations, language data, apps or website changes have already been implemented or published.
+
+
+## NEW OWNER DIRECTIVE — Native and installable NOVA experience on phones and Windows PC
+
+Owner requirement: NOVA MARKET must be usable as an app on phones and as an app on Windows desktop/laptop PCs. This is an explicit platform requirement, not merely a responsive-design suggestion.
+
+### Required platforms
+- Android phones and tablets: provide an installable Android application and prepare Google Play publication.
+- Apple iPhone and iPad: provide an installable iOS application and prepare Apple App Store publication.
+- Windows 10/11 PCs and laptops: provide a Windows-compatible installable desktop experience. Evaluate a signed Windows desktop package (such as MSIX) and/or an installable PWA; choose the most maintainable secure option and document the decision. The Windows experience must support normal desktop use, keyboard/mouse, resizing, accessible controls and Windows installation/uninstallation expectations.
+- Keep the website available in current desktop browsers as well; a Windows app does not replace the web version.
+- Use a shared secure backend and consistent accounts, catalogue, favourites, orders and language preferences across phone, Windows and web experiences.
+
+### Delivery and verification
+1. Audit the existing repository and determine the best practical architecture for Android, iOS, Windows and web without duplicating business logic.
+2. Implement the responsive web foundation and shared backend/API contracts.
+3. Produce installable Android and iOS builds and a Windows-compatible installable build/PWA, as appropriate to the selected architecture.
+4. Test on real or representative Android/iOS devices and Windows 10/11 environments, including installation, updates, sign-in, language switching, accessibility, offline/error states and security.
+5. Prepare store/package signing and release assets. Do not claim an app is published in Google Play, Apple App Store or Microsoft Store until the store confirms approval and its public listing is accessible.
+6. Clearly report which platform builds actually exist, their signing/installation status, test results, and any external account, certificate, fee or owner approval still required.
+
+Do not describe a mobile-only build as Windows support. Do not describe a browser page as a packaged Windows desktop app unless the installable PWA experience is actually implemented and tested. This directive records the owner's requirement; it does not mean any new app build has already been created or published.
