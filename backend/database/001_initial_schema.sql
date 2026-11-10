@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS products (
     CHECK (status IN ('draft','needs_review','approved','published','paused','rejected','archived')),
   public_price NUMERIC(12,2),
   public_currency CHAR(3),
+  image_url TEXT,
   compliance_status TEXT NOT NULL DEFAULT 'unchecked'
     CHECK (compliance_status IN ('unchecked','passed','needs_review','rejected')),
   approved_by UUID REFERENCES admin_users(id),
