@@ -3,7 +3,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.86.0';
 const SUPABASE_URL = 'https://jjymmdnqawzgxihawpnh.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_jm2qpSeEIAQznhLo4iWzmg_uj3IveX6';
 const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  auth: { flowType: 'pkce', persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
 });
 
 const $ = id => document.getElementById(id);
@@ -76,11 +76,12 @@ async function load() {
 
 $('connect').addEventListener('click', async () => {
   $('connect').disabled = true;
-  status($('connection'), 'Checking owner session and loading data…');
+  status($('connection'), 'بدأ الاتصال… جارٍ فحص جلسة المالك.', true);
   try {
     await load();
   } catch (error) {
-    status($('connection'), error.message);
+    console.error('NOVA dashboard connection failed:', error);
+    status($('connection'), 'فشل الاتصال: ' + (error?.message || 'خطأ غير معروف') + ' — افتح صفحة تسجيل دخول المالك ثم أعد المحاولة.');
   } finally {
     $('connect').disabled = false;
   }
