@@ -1,41 +1,60 @@
-const $ = id => document.getElementById(id);
-let api = '';
-let token = '';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.86.0';
 
-const headers = () => ({
-  Authorization: 'Bearer ' + token,
-  'Content-Type': 'application/json'
+const SUPABASE_URL = 'https://jjymmdnqawzgxihawpnh.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_jm2qpSeEIAQznhLo4iWzmg_uj3IveX6';
+const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
 });
+
+const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
 }[char]));
-
-async function apiCall(path, options = {}) {
-  const response = await fetch(api.replace(/\/$/, '') + path, {
-    ...options,
-    headers: { ...headers(), ...(options.headers || {}) }
-  });
-  const body = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(body.message || body.error || ('HTTP ' + response.status));
-  return body;
-}
 
 function status(element, message, ok = false) {
   element.textContent = message;
   element.className = ok ? 'admin-status admin-success' : 'admin-status admin-error';
 }
 
+async function apiCall(action, extra = {}) {
+  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+  if (sessionError) throw sessionError;
+  if (!session?.access_token) throw new Error('لم نعثر على جلسة دخول. افتح صفحة إعداد المالك وسجّل الدخول أولاً.');
+  const { data, error } = await supabase.functions.invoke('nova-admin-api', {
+    body: { action, ...extra }
+  });
+  if (error) {
+    let message = error.message || 'تعذر الاتصال بالخادم.';
+    try {
+      const body = await error.context?.json();
+      if (body?.error) message = body.error;
+    } catch {}
+    throw new Error(message);
+  }
+  if (data?.error) throw new Error(data.error);
+  return data;
+}
+
 async function load() {
-  const [products, approvals, suppliers] = await Promise.all([
-    apiCall('/api/admin/products'),
-    apiCall('/api/admin/approvals'),
-    apiCall('/api/admin/suppliers')
+  const [overview, products, approvals, suppliers] = await Promise.all([
+    apiCall('dashboard'),
+    apiCall('list_products'),
+    apiCall('list_approvals'),
+    apiCall('list_suppliers')
   ]);
 
   $('overview').textContent =
-    products.products.length + ' product records · ' +
-    approvals.approvals.length + ' pending approvals · ' +
-    suppliers.suppliers.length + ' supplier records';
+    overview.overview.totalProducts + ' products · ' +
+    overview.overview.pendingApprovals + ' pending approvals · ' +
+    overview.overview.supplierRecords + ' supplier records';
+
+  $('productsList').innerHTML = products.products.length
+    ? products.products.map(item => `
+      <div class="admin-row">
+        <strong>${esc(item.source_title)}</strong> · ${esc(item.status)}
+        <br><small>${esc(item.slug)} · ${esc(item.compliance_status)}</small>
+      </div>`).join('')
+    : 'No products yet.';
 
   $('approvals').innerHTML = approvals.approvals.length
     ? approvals.approvals.map(item => `
@@ -52,20 +71,18 @@ async function load() {
     '<div class="admin-row"><strong>' + esc(item.display_name) +
     '</strong> · ' + esc(item.integration_status) + '</div>'
   ).join('');
+  status($('connection'), 'Authenticated with the current Supabase session.', true);
 }
 
 $('connect').addEventListener('click', async () => {
-  api = $('apiBase').value.trim();
-  token = $('ownerToken').value;
-  if (!/^https?:\/\//.test(api) || token.length < 32) {
-    status($('connection'), 'Enter a valid API URL and owner token (at least 32 characters).');
-    return;
-  }
+  $('connect').disabled = true;
+  status($('connection'), 'Checking owner session and loading data…');
   try {
     await load();
-    status($('connection'), 'Backend connected for this page session.', true);
   } catch (error) {
     status($('connection'), error.message);
+  } finally {
+    $('connect').disabled = false;
   }
 });
 
@@ -78,9 +95,8 @@ $('approvals').addEventListener('click', async event => {
   if (!window.confirm('Are you sure you want to ' + label + '? This records the decision only; it does not publish or pay.')) return;
   button.disabled = true;
   try {
-    await apiCall('/api/admin/approvals/' + encodeURIComponent(approvalId) + '/decision', {
-      method: 'POST',
-      body: JSON.stringify({ decision, note: 'Recorded from NOVA AI MANAGER dashboard.' })
+    await apiCall('decide_approval', {
+      approvalId, decision, note: 'Recorded from NOVA AI MANAGER dashboard.'
     });
     status($('connection'), 'Decision recorded. No publication or payment was executed.', true);
     await load();
@@ -92,23 +108,26 @@ $('approvals').addEventListener('click', async event => {
 
 $('draftForm').addEventListener('submit', async event => {
   event.preventDefault();
-  if (!api || !token) {
-    status($('draftMessage'), 'Connect to the backend first.');
-    return;
-  }
+  const submit = event.currentTarget.querySelector('button[type="submit"]');
+  submit.disabled = true;
   const form = new FormData(event.currentTarget);
   const body = Object.fromEntries(form.entries());
   body.public_price = body.public_price === '' ? null : Number(body.public_price);
   body.public_currency = body.public_currency === '' ? null : body.public_currency.toUpperCase();
   try {
-    const result = await apiCall('/api/admin/products', {
-      method: 'POST',
-      body: JSON.stringify(body)
-    });
+    const result = await apiCall('create_product', body);
     status($('draftMessage'), 'Draft saved: ' + result.product.id, true);
     event.currentTarget.reset();
     await load();
   } catch (error) {
     status($('draftMessage'), error.message);
+  } finally {
+    submit.disabled = false;
   }
+});
+
+supabase.auth.getSession().then(({ data, error }) => {
+  if (error) status($('connection'), 'Session check failed: ' + error.message);
+  else if (data.session) status($('connection'), 'Session detected. Press Connect to verify owner access.', true);
+  else status($('connection'), 'No active session. Sign in from the owner setup page.');
 });
