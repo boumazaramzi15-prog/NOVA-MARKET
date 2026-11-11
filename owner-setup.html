@@ -6,12 +6,18 @@
   <meta name="robots" content="noindex,nofollow">
   <title>NOVA MARKET — تفعيل المالك</title>
   <style>
-    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#101827;color:#eef2f7;font-family:system-ui,-apple-system,Segoe UI,sans-serif;padding:20px}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;display:grid;place-items:center;background:#101827;color:#eef2f7;font-family:system-ui,-apple-system,Segoe UI,sans-serif;padding:20px}
     main{width:min(100%,480px);background:#182438;border:1px solid #34445c;border-radius:18px;padding:28px;box-shadow:0 18px 60px #0005}
-    h1{margin:0 0 10px;font-size:25px}p{color:#c4cfdd;line-height:1.7}.muted{font-size:14px;color:#9eacc0}
-    button{width:100%;border:0;border-radius:10px;padding:14px 18px;background:#d8a84e;color:#18202c;font-weight:700;font-size:16px;cursor:pointer;margin-top:14px}
-    button:disabled{opacity:.55;cursor:wait}#status{margin-top:18px;padding:12px;border-radius:10px;background:#111c2d;white-space:pre-wrap;overflow-wrap:anywhere}
+    h1{margin:0 0 10px;font-size:25px}
+    p{color:#c4cfdd;line-height:1.7}
+    .muted{font-size:14px;color:#9eacc0}
+    button{width:100%;border:0;border-radius:10px;padding:14px 18px;background:#d8a84e;color:#18202c;font-weight:700;font-size:16px;cursor:pointer;margin-top:14px;touch-action:manipulation}
+    button.secondary{background:#33445c;color:#eef2f7}
+    button:disabled{opacity:.55;cursor:wait}
+    #status{margin-top:18px;padding:12px;border-radius:10px;background:#111c2d;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7}
     .ok{color:#9de3b1}.err{color:#ffaaa8}
+    [hidden]{display:none!important}
   </style>
 </head>
 <body>
@@ -19,8 +25,9 @@
   <h1>NOVA MARKET</h1>
   <p>إعداد حساب مالك المشروع</p>
   <p class="muted">سيُرسل رابط دخول مؤقت إلى بريد المالك المعتمد فقط. لا توجد خانة لكلمة المرور، ولا يتم طلب أي مفتاح سري.</p>
-  <button id="send">إرسال رابط الدخول إلى بريد المالك</button>
-  <div id="status" role="status" aria-live="polite">جاهز. اضغط الزر لإرسال رابط الدخول.</div>
+  <button id="send" type="button">إرسال رابط الدخول إلى بريد المالك</button>
+  <button id="logout" class="secondary" type="button" hidden>تسجيل الخروج</button>
+  <div id="status" role="status" aria-live="polite">جاهز. اضغط إرسال رابط الدخول للمتابعة.</div>
 </main>
 <script type="module">
   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.86.0';
@@ -33,10 +40,48 @@
     auth: { flowType: 'pkce', persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
   });
 
-  const button = document.getElementById('send');
+  const sendButton = document.getElementById('send');
+  const logoutButton = document.getElementById('logout');
   const status = document.getElementById('status');
   const show = (message, kind='') => { status.textContent = message; status.className = kind; };
-  const busy = (value) => { button.disabled = value; };
+  const busy = (value, button) => { button.disabled = value; };
+
+  async function sendMagicLink() {
+    busy(true, sendButton);
+    show('جارٍ إرسال رابط الدخول إلى البريد المعتمد…');
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email: OWNER_EMAIL,
+        options: { shouldCreateUser: false, emailRedirectTo: REDIRECT_URL }
+      });
+      if (error) {
+        show('لم يُرسل الرابط: ' + error.message + '\nتحقق من إضافة رابط الصفحة إلى قائمة Redirect URLs في إعدادات Auth.', 'err');
+      } else {
+        show('تم طلب رابط دخول مؤقت إلى ' + OWNER_EMAIL + '. افتح أحدث رسالة واضغط الرابط من هذا الجهاز.');
+      }
+    } catch (error) {
+      show('حدث خطأ أثناء طلب الرابط: ' + (error?.message || 'خطأ غير معروف'), 'err');
+    } finally {
+      busy(false, sendButton);
+    }
+  }
+
+  async function signOutOwner() {
+    busy(true, logoutButton);
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        show('تعذّر تسجيل الخروج: ' + error.message, 'err');
+        return;
+      }
+      logoutButton.hidden = true;
+      show('تم تسجيل الخروج. اضغط الآن على زر إرسال رابط الدخول، ثم افتح أحدث رسالة في بريدك.');
+    } catch (error) {
+      show('حدث خطأ أثناء تسجيل الخروج: ' + (error?.message || 'خطأ غير معروف'), 'err');
+    } finally {
+      busy(false, logoutButton);
+    }
+  }
 
   async function handleReturn() {
     const params = new URLSearchParams(location.search);
@@ -45,53 +90,41 @@
       history.replaceState({}, document.title, REDIRECT_URL);
       return;
     }
-    const { data: { session }, error } = await supabase.auth.getSession();
-    if (error) { show('تعذّر استعادة جلسة الدخول: ' + error.message, 'err'); return; }
-    if (!session) return;
-    show('تم التحقق من جلسة الدخول. جارٍ تفعيل حساب المالك…');
-    busy(true);
-    const { data, error: invokeError } = await supabase.functions.invoke('bootstrap-nova-owner', { body: {} });
-    if (invokeError) {
-      let detail = invokeError.message || 'تعذّر تشغيل وظيفة التفعيل.';
-      try { if (invokeError.context) { const body = await invokeError.context.json(); if (body?.error) detail = body.error; } } catch {}
-      show('لم يكتمل التفعيل: ' + detail + '\nلا ترسل رموز الدخول أو المفاتيح لأي شخص.', 'err');
-      busy(false);
-      return;
+    try {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) { show('تعذّر استعادة جلسة الدخول: ' + error.message, 'err'); return; }
+      if (!session) return;
+
+      show('تم التحقق من جلسة الدخول. جارٍ تفعيل حساب المالك…');
+      busy(true, sendButton);
+      const { data, error: invokeError } = await supabase.functions.invoke('bootstrap-nova-owner', { body: {} });
+      if (invokeError) {
+        let detail = invokeError.message || 'تعذّر تشغيل وظيفة التفعيل.';
+        try {
+          if (invokeError.context) {
+            const body = await invokeError.context.json();
+            if (body?.error) detail = body.error;
+          }
+        } catch {}
+        show('لم يكتمل التفعيل: ' + detail + '\nلا ترسل رموز الدخول أو المفاتيح لأي شخص.', 'err');
+        return;
+      }
+      if (!data?.success) {
+        show('لم يكتمل التفعيل: ' + (data?.error || 'استجابة غير متوقعة.'), 'err');
+        return;
+      }
+      show('نجح تفعيل المالك في NOVA MARKET.\nاضغط زر تسجيل الخروج، ثم أرسل رابط دخول جديد لتحديث صلاحيات الجلسة.', 'ok');
+      logoutButton.hidden = false;
+      history.replaceState({}, document.title, REDIRECT_URL);
+    } catch (error) {
+      show('حدث خطأ أثناء التحقق: ' + (error?.message || 'خطأ غير معروف'), 'err');
+    } finally {
+      busy(false, sendButton);
     }
-    if (!data?.success) {
-      show('لم يكتمل التفعيل: ' + (data?.error || 'استجابة غير متوقعة.'), 'err');
-      busy(false);
-      return;
-    }
-    show('نجح تفعيل المالك في NOVA MARKET.\nاضغط تسجيل الخروج ثم أعد تسجيل الدخول برابط جديد لتحديث صلاحيات الجلسة.', 'ok');
-    button.textContent = 'تسجيل الخروج';
-    button.onclick = async () => {
-      busy(true);
-      await supabase.auth.signOut();
-      show('تم تسجيل الخروج. اضغط إرسال رابط الدخول مرة أخرى بعد قليل لتحديث الجلسة.');
-      button.textContent = 'إرسال رابط الدخول إلى بريد المالك';
-      button.onclick = sendMagicLink;
-      busy(false);
-    };
-    history.replaceState({}, document.title, REDIRECT_URL);
   }
 
-  async function sendMagicLink() {
-    busy(true);
-    show('جارٍ إرسال رابط الدخول إلى البريد المعتمد…');
-    const { error } = await supabase.auth.signInWithOtp({
-      email: OWNER_EMAIL,
-      options: { shouldCreateUser: false, emailRedirectTo: REDIRECT_URL }
-    });
-    if (error) {
-      show('لم يُرسل الرابط: ' + error.message + '\nتحقق من إضافة رابط الصفحة إلى قائمة Redirect URLs في إعدادات Auth.', 'err');
-    } else {
-      show('تم طلب رابط دخول مؤقت إلى ' + OWNER_EMAIL + '. افتح البريد واضغط الرابط من هذا الجهاز. قد يستغرق وصوله قليلًا.');
-    }
-    busy(false);
-  }
-
-  button.addEventListener('click', sendMagicLink);
+  sendButton.addEventListener('click', sendMagicLink);
+  logoutButton.addEventListener('click', signOutOwner);
   handleReturn();
 </script>
 </body>
