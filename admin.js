@@ -35,6 +35,31 @@ async function apiCall(action, extra = {}) {
   return data;
 }
 
+async function cjCall(action, extra = {}) {
+  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+  if (sessionError) throw sessionError;
+  if (!session?.access_token) throw new Error('يلزم تسجيل دخول المالك أولاً.');
+  const { data, error } = await supabase.functions.invoke('cj-bridge', { body: { action, ...extra } });
+  if (error) {
+    let message = error.message || 'تعذر الاتصال بخدمة CJ.';
+    try { const body = await error.context?.json(); if (body?.error) message = body.error; } catch {}
+    throw new Error(message);
+  }
+  if (data?.error) throw new Error(data.error);
+  return data;
+}
+
+async function loadCJStatus() {
+  try {
+    const result = await cjCall('status');
+    const supplier = result.supplier || {};
+    const state = result.apiKeyConfigured ? 'مفتاح CJ محفوظ في الخادم' : 'بانتظار إضافة CJ_API_KEY إلى أسرار Supabase';
+    $('cjStatus').textContent = (supplier.display_name || 'CJdropshipping') + ' · ' + (supplier.integration_status || 'not_connected') + ' · ' + state;
+  } catch (error) {
+    $('cjStatus').textContent = 'تعذر قراءة حالة CJ: ' + error.message;
+  }
+}
+
 async function load() {
   const [overview, products, approvals, suppliers] = await Promise.all([
     apiCall('dashboard'),
@@ -71,7 +96,7 @@ async function load() {
     '<div class="admin-row"><strong>' + esc(item.display_name) +
     '</strong> · ' + esc(item.integration_status) + '</div>'
   ).join('');
-  status($('connection'), 'Authenticated with the current Supabase session.', true);
+  status($('connection'), 'Authenticated with the current Supabase session.', true);\n  await loadCJStatus();
 }
 
 $('connect').addEventListener('click', async () => {
@@ -131,4 +156,37 @@ supabase.auth.getSession().then(({ data, error }) => {
   if (error) status($('connection'), 'Session check failed: ' + error.message);
   else if (data.session) status($('connection'), 'Session detected. Press Connect to verify owner access.', true);
   else status($('connection'), 'No active session. Sign in from the owner setup page.');
+});
+
+
+$('cjTest').addEventListener('click', async () => {
+  $('cjTest').disabled = true;
+  $('cjStatus').textContent = 'جارٍ اختبار الاتصال…';
+  try {
+    const result = await cjCall('test_connection');
+    $('cjStatus').textContent = result.message || 'تم التحقق من اتصال CJ بنجاح.';
+    await loadCJStatus();
+    status($('connection'), 'CJ API authentication verified.', true);
+  } catch (error) {
+    $('cjStatus').textContent = 'لم يكتمل الاتصال: ' + error.message;
+  } finally { $('cjTest').disabled = false; }
+});
+
+$('cjSearch').addEventListener('click', async () => {
+  const keyword = $('cjKeyword').value.trim();
+  if (!keyword) { $('cjResults').textContent = 'اكتب اسم المنتج أولاً.'; return; }
+  $('cjSearch').disabled = true;
+  $('cjResults').textContent = 'جارٍ البحث في كتالوج CJ…';
+  try {
+    const result = await cjCall('search_products', { keyword, page: 1, size: 20 });
+    $('cjResults').innerHTML = result.products.length ? result.products.map(p => `
+      <div class="admin-row">
+        <strong>${esc(p.title || 'Unnamed product')}</strong><br>
+        <small>SKU: ${esc(p.sku || '—')} · التكلفة: $${Number(p.costUsd || 0).toFixed(2)} · المخزون: ${Number(p.stock || 0)} · ${esc(p.category || 'غير مصنف')}</small><br>
+        ${p.imageUrl ? `<img src="${esc(p.imageUrl)}" alt="" loading="lazy" style="width:84px;height:84px;object-fit:contain;border-radius:8px;margin-top:8px">` : ''}
+      </div>`).join('') : 'لم يتم العثور على منتجات مطابقة.';
+    $('cjResults').insertAdjacentHTML('afterbegin', '<p class="admin-status">تم العثور على ' + Number(result.totalRecords || result.products.length) + ' نتيجة تقريباً. لم يتم استيراد أي منتج.</p>');
+  } catch (error) {
+    $('cjResults').textContent = 'تعذر البحث: ' + error.message;
+  } finally { $('cjSearch').disabled = false; }
 });
